@@ -55,17 +55,15 @@ export default {
   methods: {
     EmployeeDetail(element){
        this.showGrid=0;
-      //  axios.get("http://dummy.restapiexample.com/api/v1/employee/"+element.id,{ mode: 'cors', method: 'GET', dataType: 'json', headers: { 'Access-Control-Allow-Origin':'*', 'Content-type': 'application/json;charset=utf-8','Upgrade-Insecure-Requests':1}}).then(response=> (this.employeeSingleData=response.data)).catch(
-      //    function(error){
-      //      console.log(error);
-      //    }
-      //  );
-
-       fetch('http://dummy.restapiexample.com/api/v1/employee/'+element.id)
-  .then((response) => (this.employeeSingleData=response.data))
-  .then((data) => {
-    console.log(data);
-  });
+        axios.get("http://dummy.restapiexample.com/api/v1/employee/"+element.id,{headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+                    'COntent-Type': 'application/json'
+      }}).then(response=> (this.employeeSingleData=response.data)).catch(
+         function(error){
+            console.log(error);
+         }
+       );
+ 
 
        this.showSingleEmployee=1
     },
@@ -81,7 +79,7 @@ export default {
        employeeListData:[],
        showGrid:1,
        showSingleEmployee:0,
-       employeeSingleData:{}
+       employeeSingleData:null
     }
   },
 }
