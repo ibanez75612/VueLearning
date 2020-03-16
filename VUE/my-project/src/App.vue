@@ -5,19 +5,19 @@
     <table class="table" v-if="showGrid==1" >
       <tbody>
       <tr>
-        <td>index</td>
-        <td>Çalışan</td>
-        <td>Maaş</td>
-        <td>Yaş</td>
+        <td>id</td>
+        <td>Mail</td>
+        <td>Ad</td>
+        <td>Soyad</td>
         <td>Resim</td>
         <td>Detay</td>
       </tr>
       <tr v-for="(tb,index) in employeeListData" :key="tb.id">
-        <td>{{tb.id}}</td>
-        <td>{{tb.employee_name}}</td>
-        <td>{{tb.employee_salary}} $</td>
-        <td>{{tb.employee_age}}</td>
-        <td> <img v-bind:src="tb.profile_image" /> </td>
+        <td>{{tb.id}}</td> 
+        <td>{{tb.email}}</td>
+        <td>{{tb.first_name}}</td>
+        <td>{{tb.last_name}}</td>
+        <td> <img v-bind:src="tb.avatar" /> </td>
         <td><button  class="btn btn-primary" v-on:click="EmployeeDetail(tb)">Detayını Gör</button></td>
       </tr>
       </tbody>
@@ -26,18 +26,14 @@
     <table class="table" v-if="showSingleEmployee==1"> 
         <tr>
         <td>{{employeeSingleData.id}}</td>
-        <td>{{employeeSingleData.employee_name}}</td>
-        <td>{{employeeSingleData.employee_salary}}</td>
-        <td>{{employeeSingleData.employee_age}}</td>
-         <td> <img v-bind:src="employeeSingleData.profile_image" /> </td>
+        <td>{{employeeSingleData.email}}</td>
+        <td>{{employeeSingleData.first_name}}</td>
+        <td>{{employeeSingleData.last_name}}</td>
+         <td> <img v-bind:src="employeeSingleData.avatar" /> </td>
+         <td><button  class="btn btn-danger" v-on:click="DetailBack()">Geri Dön</button></td>
         </tr>
     </table>
-
-    <table class="table" v-else> 
-        <tr>
-        <td>Kayıt bulunamadı</td>
-        </tr>
-    </table>
+ 
 
   </div>
 </template>
@@ -50,23 +46,22 @@ export default {
     
   },
   mounted() {
-    axios.get("http://dummy.restapiexample.com/api/v1/employees").then(response =>(this.employeeListData=response.data.data))
+    axios.get("https://reqres.in/api/users").then(response =>(this.employeeListData=response.data.data))
   },
   methods: {
     EmployeeDetail(element){
        this.showGrid=0;
-        axios.get("http://dummy.restapiexample.com/api/v1/employee/"+element.id,{headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-                    'COntent-Type': 'application/json'
-      }}).then(response=> (this.employeeSingleData=response.data)).catch(
+        axios.get("https://reqres.in/api/users/"+element.id).then(response=> (this.employeeSingleData=response.data.data)).catch(
          function(error){
             console.log(error);
          }
        );
- 
-
        this.showSingleEmployee=1
     },
+    DetailBack(){
+      this.showSingleEmployee=0;
+      this.showGrid=1;
+    }
   },
   computed: {
     
